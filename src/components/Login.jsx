@@ -1,7 +1,112 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import Header from "./Header";
+import { checkValidate } from "../utils/validate";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
+import { auth } from "../utils/firebase";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
 
 const Login = () => {
+  const [isSignInForm, setIsSignInForm] = useState(true);
+  const [errorMessage, setErrorMessage] = useState();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const nameBox = useRef(null);
+  const email = useRef(null);
+  const password = useRef(null);
+
+  const handleButtonClick = () => {
+    console.log(
+      email.current.value,
+      password.current.value,
+      nameBox.current.value
+    );
+    const message = checkValidate(
+      email.current.value,
+      password.current.value,
+      nameBox.current.value
+    );
+    console.log(message);
+    setErrorMessage(message);
+
+    if (message) return;
+
+    if (!isSignInForm) {
+      // sign up
+      createUserWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          // Signed up
+          const user = userCredential.user;
+          updateProfile(user, {
+            displayName: nameBox.current.value,
+            photoURL:
+              "https://icons.veryicon.com/png/o/holiday/spring-festival-icon/television-110.png",
+          })
+            .then(() => {
+              // Profile updated!
+              // ...
+              const { uid, email, displayName, photoURL } = auth.currentUser;
+              dispatch(
+                addUser({
+                  uid: uid,
+                  email: email,
+                  displayName: displayName,
+                  photoURL: photoURL,
+                })
+              );
+              navigate("/browse");
+            })
+            .catch((error) => {
+              // An error occurred
+              // ...
+              setErrorMessage(error.message);
+            });
+          console.log(user);
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(errorCode + " - " + errorMessage);
+          // ..
+        });
+    } else {
+      // sign in
+      signInWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          console.log(user);
+          navigate("/browse");
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(errorCode + " - " + errorMessage);
+        });
+    }
+    setErrorMessage(message);
+  };
+
+  const toggleSignInForm = () => {
+    setIsSignInForm(!isSignInForm);
+  };
+
   return (
     <div>
       <Header />
@@ -11,20 +116,48 @@ const Login = () => {
         alt="backgroudImage"
       />
       <div>
-        <form className="w-3/12 p-12 relative bg-[#DDE5B6] my-40 mx-auto rounded-2xl ">
+        <form
+          onSubmit={(e) => e.preventDefault()}
+          className="w-3/12 p-10 absolute bg-black text-white my-40 mx-auto right-0 left-0 rounded-2xl opacity-90"
+        >
+          <h1 className="font-bold text-3xl py-4" onClick={handleButtonClick}>
+            {isSignInForm ? "Sign In" : "Sign Up"}
+          </h1>
+
+          {!isSignInForm && (
+            <input
+              ref={nameBox}
+              type="text"
+              placeholder="Full Name"
+              className="my-4 p-2 w-full  bg-gray-600 rounded-lg"
+            />
+          )}
+
           <input
+            ref={email}
             type="text"
             placeholder="Email Address"
-            className="my-2 p-2 w-full border-2  border-[#A98467] rounded-lg"
+            className="my-4 p-2 w-full  bg-gray-600 rounded-lg"
           />
           <input
+            ref={password}
             type="password"
             placeholder="Password"
-            className=" my-2 p-2 w-full border-2 bold border-[#A98467] rounded-lg"
+            className=" my-4 p-2 w-full bold bg-gray-600  rounded-lg"
           />
-          <button className="bg-[#A98467] my-2 w-full p-2 rounded-lg">
-            Submit
+          <p className="text-red-700 font-bold text-lg">{errorMessage}</p>
+          <button
+            className="bg-red-700 my-6 w-full p-2 rounded-lg cursor-pointer"
+            onClick={handleButtonClick}
+          >
+            {isSignInForm ? "Sign In" : "Sign Up"}
           </button>
+
+          <p className="cursor-pointer text-sm" onClick={toggleSignInForm}>
+            {isSignInForm
+              ? "New to Showciety? Sign Up Now"
+              : "Already have an account? Sign In"}
+          </p>
         </form>
       </div>
     </div>
