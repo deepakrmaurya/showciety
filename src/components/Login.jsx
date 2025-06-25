@@ -7,14 +7,13 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { auth } from "../utils/firebase";
-import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
+import { USER_AVATAR } from "../utils/constants";
 
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState();
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const nameBox = useRef(null);
@@ -24,13 +23,13 @@ const Login = () => {
   const handleButtonClick = () => {
     console.log(
       email.current.value,
-      password.current.value,
-      nameBox.current.value
+      password.current.value
+      // nameBox.current.value
     );
     const message = checkValidate(
       email.current.value,
-      password.current.value,
-      nameBox.current.value
+      password.current.value
+      // nameBox.current.value
     );
     console.log(message);
     setErrorMessage(message);
@@ -49,8 +48,7 @@ const Login = () => {
           const user = userCredential.user;
           updateProfile(user, {
             displayName: nameBox.current.value,
-            photoURL:
-              "https://icons.veryicon.com/png/o/holiday/spring-festival-icon/television-110.png",
+            photoURL: USER_AVATAR,
           })
             .then(() => {
               // Profile updated!
@@ -64,7 +62,6 @@ const Login = () => {
                   photoURL: photoURL,
                 })
               );
-              navigate("/browse");
             })
             .catch((error) => {
               // An error occurred
@@ -91,7 +88,6 @@ const Login = () => {
           // Signed in
           const user = userCredential.user;
           console.log(user);
-          navigate("/browse");
           // ...
         })
         .catch((error) => {
