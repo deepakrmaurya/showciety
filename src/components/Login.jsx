@@ -21,17 +21,11 @@ const Login = () => {
   const password = useRef(null);
 
   const handleButtonClick = () => {
-    console.log(
-      email.current.value,
-      password.current.value
-      // nameBox.current.value
-    );
     const message = checkValidate(
       email.current.value,
       password.current.value
       // nameBox.current.value
     );
-    console.log(message);
     setErrorMessage(message);
 
     if (message) return;
@@ -68,7 +62,6 @@ const Login = () => {
               // ...
               setErrorMessage(error.message);
             });
-          console.log(user);
           // ...
         })
         .catch((error) => {
@@ -87,8 +80,6 @@ const Login = () => {
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
-          console.log(user);
-          // ...
         })
         .catch((error) => {
           const errorCode = error.code;
