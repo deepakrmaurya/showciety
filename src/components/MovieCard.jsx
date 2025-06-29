@@ -1,6 +1,6 @@
 import React from "react";
 import { IMG_CDN_URL } from "../utils/constants";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setSelectedMovie } from "../utils/movieSlice";
 
 const MovieCard = ({ movie }) => {
