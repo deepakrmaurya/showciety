@@ -55,9 +55,10 @@ const Header = () => {
     dispatch(toggleGptSearchView());
   };
   return (
-    <div className="z-10 px-5 py-2 w-screen flex absolute justify-between bg-gradient-to-br from-gray-400">
+    <div className="z-10  w-screen flex flex-col md:flex-row absolute items-center justify-center md:justify-between px-4 py-2 bg-gradient-to-br from-gray-600 shadow-md">
+      {/* // className="z-10 px-5 py-2 w-screen absolute justify-between flex
+      bg-gradient-to-br from-gray-400" */}
       <img className="w-32" src={LOGO} alt="Logo" />
-
       {user && (
         <div className="flex">
           {showGptSearch && (
@@ -74,14 +75,29 @@ const Header = () => {
           )}
           <button
             onClick={handleGptSearchClick}
-            className="font-bold rounded-2xl px-5 mt-3 mb-2 mr-7 bg-fuchsia-700 cursor-pointer"
+            className="cursor-pointer px-5 mt-3 mb-2 mr-7 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out"
+            // className="font-bold rounded-2xl px-5 mt-3 mb-2 mr-7 bg-fuchsia-700 cursor-pointer"
           >
-            {showGptSearch ? "Home Page" : "GPT Search"}
+            {showGptSearch ? "Home Page" : "Smart Search"}
           </button>
-          <img className="w-15" src={user?.photoURL || USER_AVATAR} />
-          <button onClick={handleSignOut} className="cursor-pointer">
-            (Sign Out)
-          </button>
+
+          <details className="relative">
+            <summary className="list-none cursor-pointer">
+              <img
+                className="w-14 h-14"
+                src={user?.photoURL || USER_AVATAR}
+                alt="User"
+              />
+            </summary>
+            <div className="absolute right-0 mt-2 bg-white border rounded-lg shadow-lg  w-25 z-50">
+              <button
+                onClick={handleSignOut}
+                className="w-full text-left px-4 py-2 hover:bg-gray-200 text-black"
+              >
+                Sign Out
+              </button>
+            </div>
+          </details>
         </div>
       )}
     </div>

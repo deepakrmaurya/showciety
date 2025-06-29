@@ -7,6 +7,7 @@ import useTrendingMovies from "../hooks/useTrendingMovies";
 import useUpcomingMovies from "../hooks/useUpcomingMovies";
 import GPTSearch from "./GPTSearch";
 import { useSelector } from "react-redux";
+import MovieModal from "./MovieModal";
 
 const Browse = () => {
   const showGptSearch = useSelector((store) => store.gpt.showGptSearch);
@@ -25,6 +26,7 @@ const Browse = () => {
           <SecondaryContainer />
         </>
       )}
+      <MovieModal />
     </div>
   );
 };
