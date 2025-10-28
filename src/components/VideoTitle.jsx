@@ -26,7 +26,7 @@ const VideoTitle = ({ title, overview, movie }) => {
             {overview}
           </p>
 
-          <div className="flex pt-4 md:pt-0">
+          <div className="flex pt-4  md:pt-0">
             <button
               onClick={handlePlayClick}
               className="cup-2rsor-pointer bg-white text-black text-xl font-bold rounded-md md:py-2 md:px-6 py-2 px-5 flex hover:opacity-75"

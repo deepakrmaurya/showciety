@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useRef, useState } from "react";
 import Header from "./Header";
 import { checkValidate } from "../utils/validate";
@@ -97,7 +98,11 @@ const Login = () => {
   return (
     <div>
       <Header />
-      <img className="absolute" src={BG_URL} alt="backgroudImage" />
+      <img
+        className="absolute w-screen"
+        src="/assets/bg.png"
+        alt="backgroudImage"
+      />
       <div>
         <form
           onSubmit={(e) => e.preventDefault()}

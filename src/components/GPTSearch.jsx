@@ -8,8 +8,8 @@ const GPTSearch = () => {
     <>
       <div className="fixed -z-10">
         <img
-          className="h-screen object-cover  md:h-auto"
-          src={BG_URL}
+          className="w-screen object-cover  md:h-auto"
+          src="/assets/bg.png"
           alt="BackGround Image"
         />
       </div>
